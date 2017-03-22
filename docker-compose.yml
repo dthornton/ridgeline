@@ -1,0 +1,28 @@
+version: '2'
+services:
+  ghost:
+    image: ghost
+    depends_on:
+      - mysql
+    ports:
+      - 2368:2368
+    volumes:
+      - ./ghost:/var/lib/ghost
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_USER: ghost
+      MYSQL_PASSWORD: test1234
+      MYSQL_DATABASE: ghost
+      MYSQL_ROOT_PASSWORD: test1234
+    ports:
+      - 3333:3306
+  nginx:
+    image: nginx
+    depends_on:
+      - ghost
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d/
